@@ -14,6 +14,26 @@ import sys
 from pathlib import Path
 
 
+class DemoRequestHandler(http.server.SimpleHTTPRequestHandler):
+    """HTTP request handler with cache-busting and COOP/COEP headers."""
+
+    def end_headers(self) -> None:
+        # Never cache the demo files so browsers always load the latest build.
+        self.send_header("Cache-Control", "no-store, no-cache, must-revalidate, max-age=0")
+        self.send_header("Pragma", "no-cache")
+        self.send_header("Expires", "0")
+        # Cross-Origin Isolation headers required for Godot threaded Web builds
+        # (SharedArrayBuffer). Sending them unconditionally is harmless for
+        # single-threaded builds.
+        self.send_header("Cross-Origin-Opener-Policy", "same-origin")
+        self.send_header("Cross-Origin-Embedder-Policy", "require-corp")
+        super().end_headers()
+
+    def log_message(self, format: str, *args) -> None:
+        # Log to stdout so tmux/terminal shows access traffic.
+        sys.stdout.write("%s - - [%s] %s\n" % (self.client_address[0], self.log_date_time_string(), format % args))
+
+
 def generate_self_signed_cert(cert_path: Path, key_path: Path, host: str) -> None:
     """Generate a self-signed certificate with OpenSSL."""
     cert_path.parent.mkdir(parents=True, exist_ok=True)
@@ -52,9 +72,7 @@ def main() -> int:
 
     os.chdir(directory)
 
-    Handler = http.server.SimpleHTTPRequestHandler
-
-    with socketserver.TCPServer((args.host, args.port), Handler) as httpd:
+    with socketserver.TCPServer((args.host, args.port), DemoRequestHandler) as httpd:
         protocol = "http"
         if args.https:
             cert_path = Path(args.cert)
