@@ -1921,7 +1921,7 @@ internal_vertex_count = 0
 
 
 [node name="Body" type="Polygon2D" parent="Sprite2D/Polygons" unique_id=1641649838]
-position = Vector2(-90.0, -43.0)
+position = Vector2(-90.0, -233.0)
 texture = ExtResource("4")
 skeleton = NodePath("../../Skeleton2D")
 polygon = PackedVector2Array(0.0, 0.0, 174, 0.0, 174, 321, 0.0, 321)
