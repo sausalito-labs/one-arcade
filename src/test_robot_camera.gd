@@ -1,7 +1,7 @@
 extends Camera2D
 
-@export var target_path: NodePath = ^"../SkeletalPlayer"
-@export var follow_offset: Vector2 = Vector2(0, -90)
+@export var target_path: NodePath = ^"../SkeletalPlayer/CameraTarget"
+@export var follow_offset: Vector2 = Vector2(0, 0)
 @export var zoom_speed: float = 3.0
 @export var min_zoom: float = 0.5
 @export var max_zoom: float = 8.0

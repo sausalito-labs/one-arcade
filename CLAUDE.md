@@ -17,9 +17,19 @@ Comic-book arcade flat-shading:
 - Bold, simple color blocks with crisp black outlines via stacked shapes or future shader pass.
 
 ## Commands
-Read `GODOT_BIN` from `.env` (fallback: `godot` in PATH).
+Read `GODOT_BIN` from `.env` (fallback: `godot` in PATH, then `/root/.local/bin/godot`).
 - Launch: `$GODOT_BIN --path .`
 - Headless check: `$GODOT_BIN --headless --path . --quit`
+- Build HTML5 demo: `./scripts/build_demo.sh`
+- Build & serve HTML5 demo: `./scripts/serve_demo.sh`
+- Serve existing build only: `./scripts/serve_demo.sh --serve`
+
+Copy `.env.example` to `.env` to configure `GODOT_BIN`, `DEMO_HOST`, and `DEMO_PORT`.
+
+## HTML5 Demo Notes
+- Export preset is `Web` in `export_presets.cfg`.
+- The export uses the single-threaded (`nothreads`) template so it works with a plain HTTP server (no COOP/COEP headers required).
+- Godot export templates must be installed. On this VPS they live under `~/.local/share/godot/export_templates/`. If the folder is named `4.3-stable`, Godot looks for `4.3.stable`; symlink if needed.
 
 ## Documentation
 - Roadmap & task tracking: see `PLAN.md`
