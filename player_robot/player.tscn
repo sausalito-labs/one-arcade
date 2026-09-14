@@ -1778,7 +1778,7 @@ script = ExtResource("1")
 libraries/ = SubResource("AnimationLibrary_sx6h1")
 
 [node name="AnimationTree" type="AnimationTree" parent="." unique_id=300206752]
-active = false
+active = true
 tree_root = SubResource("23")
 anim_player = NodePath("../AnimationPlayer")
 parameters/jump/active = false
