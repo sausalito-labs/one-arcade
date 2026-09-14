@@ -1,0 +1,181 @@
+[gd_scene load_steps=9 format=3 uid="uid://c3kv1a8pxl02x"]
+
+[ext_resource type="Script" path="res://src/fighter_2d.gd" id="1_fighter"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_body"]
+radius = 20.0
+height = 140.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_fist"]
+radius = 10.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_head"]
+radius = 18.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_torso"]
+size = Vector2(50, 80)
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_legs"]
+radius = 22.0
+height = 70.0
+
+[sub_resource type="Animation" id="Animation_placeholder"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("VisualGroup:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, -70)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_placeholder"]
+_data = {
+"RESET": SubResource("Animation_placeholder")
+}
+
+[node name="Fighter2D" type="CharacterBody2D"]
+script = ExtResource("1_fighter")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -70)
+shape = SubResource("CapsuleShape2D_body")
+
+[node name="VisualGroup" type="Node2D" parent="."]
+position = Vector2(0, -70)
+
+[node name="Head" type="ColorRect" parent="VisualGroup"]
+offset_left = -15.0
+offset_top = -145.0
+offset_right = 15.0
+offset_bottom = -115.0
+color = Color(0.95, 0.8, 0.7, 1)
+
+[node name="Torso" type="ColorRect" parent="VisualGroup"]
+offset_left = -20.0
+offset_top = -115.0
+offset_right = 20.0
+offset_bottom = -45.0
+color = Color(0.2, 0.35, 0.6, 1)
+
+[node name="LeadArmPivot" type="Node2D" parent="VisualGroup"]
+position = Vector2(20, -130)
+
+[node name="UpperArm" type="ColorRect" parent="VisualGroup/LeadArmPivot"]
+offset_left = -7.5
+offset_top = 0.0
+offset_right = 7.5
+offset_bottom = 40.0
+color = Color(0.95, 0.8, 0.7, 1)
+
+[node name="ForearmPivot" type="Node2D" parent="VisualGroup/LeadArmPivot/UpperArm"]
+position = Vector2(0, 40)
+
+[node name="Forearm" type="ColorRect" parent="VisualGroup/LeadArmPivot/UpperArm/ForearmPivot"]
+offset_left = -7.0
+offset_top = 0.0
+offset_right = 7.0
+offset_bottom = 35.0
+color = Color(0.95, 0.8, 0.7, 1)
+
+[node name="FistHitbox" type="Area2D" parent="VisualGroup/LeadArmPivot/UpperArm/ForearmPivot/Forearm"]
+position = Vector2(0, 35)
+collision_layer = 4
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="VisualGroup/LeadArmPivot/UpperArm/ForearmPivot/Forearm/FistHitbox"]
+shape = SubResource("CircleShape2D_fist")
+
+[node name="RearArmPivot" type="Node2D" parent="VisualGroup"]
+position = Vector2(-20, -130)
+
+[node name="UpperArm" type="ColorRect" parent="VisualGroup/RearArmPivot"]
+offset_left = -7.5
+offset_top = 0.0
+offset_right = 7.5
+offset_bottom = 40.0
+color = Color(0.95, 0.8, 0.7, 1)
+
+[node name="ForearmPivot" type="Node2D" parent="VisualGroup/RearArmPivot/UpperArm"]
+position = Vector2(0, 40)
+
+[node name="Forearm" type="ColorRect" parent="VisualGroup/RearArmPivot/UpperArm/ForearmPivot"]
+offset_left = -7.0
+offset_top = 0.0
+offset_right = 7.0
+offset_bottom = 35.0
+color = Color(0.95, 0.8, 0.7, 1)
+
+[node name="LeadLegPivot" type="Node2D" parent="VisualGroup"]
+position = Vector2(15, -45)
+
+[node name="Thigh" type="ColorRect" parent="VisualGroup/LeadLegPivot"]
+offset_left = -9.0
+offset_top = 0.0
+offset_right = 9.0
+offset_bottom = 45.0
+color = Color(0.15, 0.2, 0.3, 1)
+
+[node name="ShinPivot" type="Node2D" parent="VisualGroup/LeadLegPivot/Thigh"]
+position = Vector2(0, 45)
+
+[node name="Shin" type="ColorRect" parent="VisualGroup/LeadLegPivot/Thigh/ShinPivot"]
+offset_left = -8.0
+offset_top = 0.0
+offset_right = 8.0
+offset_bottom = 45.0
+color = Color(0.15, 0.2, 0.3, 1)
+
+[node name="RearLegPivot" type="Node2D" parent="VisualGroup"]
+position = Vector2(-15, -45)
+
+[node name="Thigh" type="ColorRect" parent="VisualGroup/RearLegPivot"]
+offset_left = -9.0
+offset_top = 0.0
+offset_right = 9.0
+offset_bottom = 45.0
+color = Color(0.15, 0.2, 0.3, 1)
+
+[node name="ShinPivot" type="Node2D" parent="VisualGroup/RearLegPivot/Thigh"]
+position = Vector2(0, 45)
+
+[node name="Shin" type="ColorRect" parent="VisualGroup/RearLegPivot/Thigh/ShinPivot"]
+offset_left = -8.0
+offset_top = 0.0
+offset_right = 8.0
+offset_bottom = 45.0
+color = Color(0.15, 0.2, 0.3, 1)
+
+[node name="HurtboxHead" type="Area2D" parent="."]
+collision_layer = 2
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HurtboxHead"]
+position = Vector2(0, -150)
+shape = SubResource("CircleShape2D_head")
+
+[node name="HurtboxTorso" type="Area2D" parent="."]
+collision_layer = 2
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HurtboxTorso"]
+position = Vector2(0, -95)
+shape = SubResource("RectangleShape2D_torso")
+
+[node name="HurtboxLegs" type="Area2D" parent="."]
+collision_layer = 2
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HurtboxLegs"]
+position = Vector2(0, -35)
+shape = SubResource("CapsuleShape2D_legs")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_placeholder")
+}

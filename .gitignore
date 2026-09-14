@@ -1,0 +1,11 @@
+# Godot 4+ specific ignores
+.godot/
+/android/
+
+.env
+*.env
+
+# Ignore Godot UID sidecars
+*.uid
+
+.DS_Store
