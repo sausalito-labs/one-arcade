@@ -12,6 +12,7 @@
 - [x] Task 3: Implement 2D locomotion (A/D movement; S crouch & Space/W jump deferred)
 - [x] Task 4: Implement jab strike state machine with attack priority
 - [x] Task 5: Add dynamic framing `Camera2D`
+- [x] Task 6: Add HTML5 demo export and local server (`scripts/build_demo.sh`, `scripts/serve_demo.sh`)
 
 ## Next Milestones
 - [ ] Hitbox / hurtbox collision response (damage, hit reaction, pushback)
