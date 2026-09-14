@@ -1796,6 +1796,10 @@ parameters/state/transition_request = ""
 parameters/state/current_index = 0
 parameters/walk_timescale/scale = 0.1
 
+[node name="CameraTarget" type="Marker2D" parent="." unique_id=999888777]
+position = Vector2(0, -26)
+gizmo_color = Color(0.941176, 0.121569, 0.121569, 1)
+
 [node name="Sprite2D" type="Node2D" parent="." unique_id=1656200920]
 position = Vector2(0, -15)
 scale = Vector2(0.06, 0.06)
