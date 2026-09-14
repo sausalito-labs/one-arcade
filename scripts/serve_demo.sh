@@ -2,7 +2,7 @@
 set -euo pipefail
 
 # Build and serve the HTML5/WebGL demo.
-# Reads GODOT_BIN, DEMO_HOST, and DEMO_PORT from .env.
+# Reads GODOT_BIN, DEMO_HOST, DEMO_PORT, BUILD_DIR, DEMO_HTTPS from .env.
 # Usage:
 #   ./scripts/serve_demo.sh           # build once then serve
 #   ./scripts/serve_demo.sh --build   # force rebuild before serving
@@ -19,6 +19,7 @@ fi
 DEMO_HOST="${DEMO_HOST:-0.0.0.0}"
 DEMO_PORT="${DEMO_PORT:-8765}"
 BUILD_DIR="${BUILD_DIR:-build/html5}"
+DEMO_HTTPS="${DEMO_HTTPS:-true}"
 INDEX="$BUILD_DIR/index.html"
 
 MODE="build-and-serve"
@@ -37,16 +38,8 @@ if [[ ! -f "$INDEX" ]]; then
     exit 1
 fi
 
-# Determine a reachable URL to print.
-ACCESS_HOST="$DEMO_HOST"
-if [[ "$ACCESS_HOST" == "0.0.0.0" ]]; then
-    ACCESS_HOST="$(hostname -I | awk '{print $1}')"
-fi
-
-echo ""
-echo "==> Serving HTML5 demo at http://$ACCESS_HOST:$DEMO_PORT/"
-echo "    Bind: $DEMO_HOST:$DEMO_PORT"
-echo "    Press Ctrl+C to stop"
-echo ""
-
-python3 -m http.server "$DEMO_PORT" --bind "$DEMO_HOST" --directory "$BUILD_DIR"
+python3 scripts/serve_demo.py \
+    --host "$DEMO_HOST" \
+    --port "$DEMO_PORT" \
+    --directory "$BUILD_DIR" \
+    --https "${DEMO_HTTPS:-true}"

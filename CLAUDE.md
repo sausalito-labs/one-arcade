@@ -24,7 +24,7 @@ Read `GODOT_BIN` from `.env` (fallback: `godot` in PATH, then `/root/.local/bin/
 - Build & serve HTML5 demo: `./scripts/serve_demo.sh`
 - Serve existing build only: `./scripts/serve_demo.sh --serve`
 
-Copy `.env.example` to `.env` to configure `GODOT_BIN`, `DEMO_HOST`, and `DEMO_PORT`.
+Copy `.env.example` to `.env` to configure `GODOT_BIN`, `DEMO_HOST`, `DEMO_PORT`, and `DEMO_HTTPS`.
 
 ## HTML5 Demo Notes
 - Export preset is `Web` in `export_presets.cfg`.

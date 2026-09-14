@@ -24,11 +24,11 @@ offset_bottom = 540.0
 color = Color(0.18, 0.18, 0.22, 1)
 
 [node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2(0, 474)
+position = Vector2(0, 450)
 zoom = Vector2(4, 4)
 script = ExtResource("2_1q2w3")
-target_path = NodePath("../SkeletalPlayer/CameraTarget")
-follow_offset = Vector2(0, 0)
+target_path = NodePath("../SkeletalPlayer")
+follow_offset = Vector2(0, -50)
 
 [node name="SkeletalPlayer" parent="." instance=ExtResource("1_u3vbg")]
 position = Vector2(0, 500)
