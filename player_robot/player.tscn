@@ -65,11 +65,29 @@ input_4/name = "fall"
 input_4/auto_advance = false
 input_4/break_loop_at_end = false
 input_4/reset = true
+input_5/name = "backup"
+input_5/auto_advance = false
+input_5/break_loop_at_end = false
+input_5/reset = true
+input_6/name = "backup_fast"
+input_6/auto_advance = false
+input_6/break_loop_at_end = false
+input_6/reset = true
 
 [sub_resource type="AnimationNodeAnimation" id="21"]
 animation = &"main/walk"
 
 [sub_resource type="AnimationNodeTimeScale" id="22"]
+
+[sub_resource type="AnimationNodeAnimation" id="28"]
+animation = &"main/backup"
+
+[sub_resource type="AnimationNodeTimeScale" id="29"]
+
+[sub_resource type="AnimationNodeAnimation" id="30"]
+animation = &"main/backup_fast"
+
+[sub_resource type="AnimationNodeTimeScale" id="31"]
 
 [sub_resource type="AnimationNodeAnimation" id="26"]
 animation = &"main/jab"
@@ -113,7 +131,15 @@ nodes/walk_animation/node = SubResource("21")
 nodes/walk_animation/position = Vector2(533.333, 626.667)
 nodes/walk_timescale/node = SubResource("22")
 nodes/walk_timescale/position = Vector2(720, 626.667)
-node_connections = [&"output", 0, &"jab", &"jab", 0, &"land_hard", &"jab", 1, &"jab_animation", &"jump", 0, &"state", &"jump", 1, &"jump_animation", &"land", 0, &"jump", &"land", 1, &"land_animation", &"land_hard", 0, &"land", &"land_hard", 1, &"land_hard_animation", &"run_timescale", 0, &"run_animation", &"state", 0, &"idle_animation", &"state", 1, &"walk_timescale", &"state", 2, &"run_timescale", &"state", 3, &"fly_animation", &"state", 4, &"fall_animation", &"walk_timescale", 0, &"walk_animation"]
+nodes/backup_animation/node = SubResource("28")
+nodes/backup_animation/position = Vector2(533.333, 866.667)
+nodes/backup_timescale/node = SubResource("29")
+nodes/backup_timescale/position = Vector2(720, 866.667)
+nodes/backup_fast_animation/node = SubResource("30")
+nodes/backup_fast_animation/position = Vector2(533.333, 986.667)
+nodes/backup_fast_timescale/node = SubResource("31")
+nodes/backup_fast_timescale/position = Vector2(720, 986.667)
+node_connections = [&"output", 0, &"jab", &"jab", 0, &"land_hard", &"jab", 1, &"jab_animation", &"jump", 0, &"state", &"jump", 1, &"jump_animation", &"land", 0, &"jump", &"land", 1, &"land_animation", &"land_hard", 0, &"land", &"land_hard", 1, &"land_hard_animation", &"run_timescale", 0, &"run_animation", &"state", 0, &"idle_animation", &"state", 1, &"walk_timescale", &"state", 2, &"run_timescale", &"state", 3, &"fly_animation", &"state", 4, &"fall_animation", &"walk_timescale", 0, &"walk_animation", &"state", 5, &"backup_timescale", &"backup_timescale", 0, &"backup_animation", &"state", 6, &"backup_fast_timescale", &"backup_fast_timescale", 0, &"backup_fast_animation"]
 
 [sub_resource type="RectangleShape2D" id="24"]
 size = Vector2(22, 32.8716)
@@ -150,6 +176,8 @@ parameters/state/current_state = "idle"
 parameters/state/transition_request = ""
 parameters/state/current_index = 0
 parameters/walk_timescale/scale = 0.1
+parameters/backup_timescale/scale = 0.1
+parameters/backup_fast_timescale/scale = 1.0
 
 [node name="CameraTarget" type="Marker2D" parent="." unique_id=999888777]
 position = Vector2(0, -26)
