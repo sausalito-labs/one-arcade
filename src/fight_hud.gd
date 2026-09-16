@@ -1,17 +1,20 @@
 class_name FightHud
 extends CanvasLayer
 
-## Arcade fight HUD: two mortale-kombat-style health bars (P1 left, P2 right)
+## Arcade fight HUD: two mortal-combat-style health bars (P1 left, P2 right)
 ## with names above, plus a center round label and KO overlay.
-## Built entirely from Control nodes; no textures required.
+## Layout is responsive: bar widths track the viewport so they span the
+## device screen on desktop and mobile alike. Built from Control nodes only.
 
-const BAR_WIDTH := 460.0
-const BAR_HEIGHT := 24.0
+const MARGIN_F := 0.02
+const CENTER_GAP_F := 0.04
+const BAR_HEIGHT := 26.0
 const BAR_TOP := 30.0
 const BAR_COLORS := {1: Color("#e8305a"), 2: Color("#4aa8e0")}
 const NAME_COLORS := {1: Color("#ffd23f"), 2: Color("#ffe8d6")}
 
 var _fills: Dictionary = {}
+var _frames: Dictionary = {}
 var _names: Dictionary = {}
 var _ko_label: Label
 var _round_label: Label
@@ -20,13 +23,11 @@ var _round_label: Label
 func _ready() -> void:
 	layer = 10
 	_build()
+	_relayout()
+	get_viewport().size_changed.connect(_relayout)
 	FightSystem.health_changed.connect(func(fid: int, hp: float) -> void:
 		if _fills.has(fid):
-			var new_width: float = BAR_WIDTH * (hp / FightSystem.MAX_HEALTH)
-			_fills[fid].size.x = new_width
-			# P2 bar shrinks from the left (toward center) — shift position right.
-			if fid == 2:
-				_fills[fid].position.x = 1280.0 - 20.0 - new_width
+			_update_fill(fid, hp)
 	)
 	FightSystem.fighter_ko.connect(func(fid: int) -> void:
 		_show_ko(fid)
@@ -48,7 +49,9 @@ func _build() -> void:
 	round.add_theme_color_override("font_outline_color", Color("#000000"))
 	round.add_theme_constant_override("outline_size", 6)
 	round.position = Vector2(0, 4)
-	round.size = Vector2(1280, 30)
+	round.size = Vector2(1, 30)
+	round.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	round.set_anchors_preset(Control.PRESET_TOP_WIDE)
 	round.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	root.add_child(round)
 	_round_label = round
@@ -63,34 +66,19 @@ func _build() -> void:
 		name_label.add_theme_color_override("font_outline_color", Color("#000000"))
 		name_label.add_theme_constant_override("outline_size", 5)
 		name_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		if is_left:
-			name_label.position = Vector2(24, 8)
-		else:
-			name_label.size = Vector2(BAR_WIDTH, 24)
+		if not is_left:
 			name_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
-			name_label.position = Vector2(1280 - 24 - BAR_WIDTH, 8)
 		root.add_child(name_label)
 		_names[fighter_id] = name_label
 
-		# Bar frame.
 		var frame := ColorRect.new()
 		frame.color = Color(0.08, 0.08, 0.1)
-		if is_left:
-			frame.position = Vector2(20, BAR_TOP)
-		else:
-			frame.position = Vector2(1280 - 20 - BAR_WIDTH, BAR_TOP)
-		frame.size = Vector2(BAR_WIDTH, BAR_HEIGHT)
 		frame.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		root.add_child(frame)
+		_frames[fighter_id] = frame
 
-		# HP fill. For P1 it drains from the right; anchor to the left edge.
 		var fill := ColorRect.new()
 		fill.color = BAR_COLORS[fighter_id]
-		fill.size = Vector2(BAR_WIDTH, BAR_HEIGHT)
-		if is_left:
-			fill.position = Vector2(20, BAR_TOP)
-		else:
-			fill.position = Vector2(1280 - 20 - BAR_WIDTH, BAR_TOP)
 		fill.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		root.add_child(fill)
 		_fills[fighter_id] = fill
@@ -106,6 +94,47 @@ func _build() -> void:
 	_ko_label.set_anchors_preset(Control.PRESET_FULL_RECT)
 	_ko_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	root.add_child(_ko_label)
+
+
+## Recompute layout after a resize: bars scale with the viewport so they
+## always span the screen edge-to-edge with a small symmetric margin.
+func _relayout() -> void:
+	var vw: float = get_viewport().get_visible_rect().size.x
+	var margin: float = vw * MARGIN_F
+	var gap: float = vw * CENTER_GAP_F
+	var bar_w: float = (vw - margin * 2.0 - gap) / 2.0
+	if bar_w <= 0.0:
+		return
+
+	for fighter_id: int in [1, 2]:
+		var is_left: bool = fighter_id == 1
+		var x: float = margin if is_left else vw - margin - bar_w
+
+		_frames[fighter_id].position = Vector2(x, BAR_TOP)
+		_frames[fighter_id].size = Vector2(bar_w, BAR_HEIGHT)
+		# Name label sits directly above its bar, full bar-width wide.
+		_names[fighter_id].position = Vector2(x, 8)
+		_names[fighter_id].size = Vector2(bar_w, 22)
+
+		var fill: ColorRect = _fills[fighter_id]
+		fill.position = Vector2(x, BAR_TOP)
+		fill.size = Vector2(bar_w, BAR_HEIGHT)
+		# Anchor side that must stay fixed when the bar drains toward center:
+		# P1 drains from the right (anchored left), P2 from the left (anchored right).
+		fill.set_meta("anchor_x", x if is_left else vw - margin)
+		_update_fill(fighter_id, FightSystem.health[fighter_id])
+
+
+func _update_fill(fighter_id: int, hp: float) -> void:
+	var fill: ColorRect = _fills[fighter_id]
+	var vw: float = get_viewport().get_visible_rect().size.x
+	var margin: float = vw * MARGIN_F
+	var gap: float = vw * CENTER_GAP_F
+	var bar_w: float = (vw - margin * 2.0 - gap) / 2.0
+	var new_width: float = bar_w * (hp / FightSystem.MAX_HEALTH)
+	var anchor_x: float = fill.get_meta("anchor_x")
+	fill.position.x = anchor_x - new_width if fighter_id == 2 else anchor_x
+	fill.size.x = new_width
 
 
 func _show_ko(koed_id: int) -> void:

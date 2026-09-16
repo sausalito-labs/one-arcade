@@ -3,6 +3,7 @@
 [ext_resource type="PackedScene" uid="uid://c8av6e2xj4of2" path="res://player_robot/player.tscn" id="1_u3vbg"]
 [ext_resource type="Script" path="res://src/fight_camera.gd" id="2_fight"]
 [ext_resource type="Script" path="res://src/fight_hud.gd" id="3_hud"]
+[ext_resource type="Script" path="res://src/touch_controls.gd" id="4_touch"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_pwk2c"]
 size = Vector2(4000, 40)
@@ -255,3 +256,7 @@ fighter_id = 2
 [node name="FightHud" type="CanvasLayer" parent="."]
 layer = 10
 script = ExtResource("3_hud")
+
+[node name="TouchControls" type="CanvasLayer" parent="."]
+layer = 20
+script = ExtResource("4_touch")
