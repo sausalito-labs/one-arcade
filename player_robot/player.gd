@@ -25,6 +25,11 @@ var no_move_horizontal_time := 0.0
 
 
 func _ready() -> void:
+	# Work around Godot 4.3 bug #96553: the default (empty name) animation
+	# library can fail to load due to a String/StringName hash mismatch.
+	# Load the library with an explicit name so it survives export.
+	var anim_lib := load("res://player_robot/animations.tres") as AnimationLibrary
+	$AnimationPlayer.add_animation_library("main", anim_lib)
 	$AnimationTree.active = true
 
 

@@ -24,12 +24,18 @@ Read `GODOT_BIN` from `.env` (fallback: `godot` in PATH, then `/root/.local/bin/
 - Build & serve HTML5 demo: `./scripts/serve_demo.sh`
 - Serve existing build only: `./scripts/serve_demo.sh --serve`
 
-Copy `.env.example` to `.env` to configure `GODOT_BIN`, `DEMO_HOST`, and `DEMO_PORT`.
+Copy `.env.example` to `.env` to configure `GODOT_BIN`, `DEMO_HOST`, `DEMO_PORT`, and `BUILD_DIR`.
 
 ## HTML5 Demo Notes
 - Export preset is `Web` in `export_presets.cfg`.
-- The export uses the single-threaded (`nothreads`) template so it works with a plain HTTP server (no COOP/COEP headers required).
-- Godot export templates must be installed. On this VPS they live under `~/.local/share/godot/export_templates/`. If the folder is named `4.3-stable`, Godot looks for `4.3.stable`; symlink if needed.
+- The export uses the threaded template so it needs a secure context
+  (HTTPS) for SharedArrayBuffer. Serve it behind Tailscale Funnel, which
+  terminates a valid HTTPS cert — the local server stays plain HTTP on
+  127.0.0.1. See `tailscale funnel --help` for path/port setup.
+- Export templates are provisioned by the game Nix workflow
+  (`godot_4-export-templates`, symlinked into
+  `~/.local/share/godot/export_templates/`). No manual download or rename
+  needed.
 
 ## Documentation
 - Roadmap & task tracking: see `PLAN.md`
