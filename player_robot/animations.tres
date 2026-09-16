@@ -1,4 +1,4 @@
-[gd_resource type="AnimationLibrary" load_steps=9 format=3]
+[gd_resource type="AnimationLibrary" load_steps=10 format=3]
 
 [sub_resource type="Animation" id="1"]
 loop_mode = 1
@@ -1649,11 +1649,89 @@ tracks/16/keys = {
 "values": [5.05738, 56.5283, 23.651, 19.9285, 18.8404, 18.8404, 86.8536, 42.6926, 5.05738]
 }
 
+[sub_resource type="Animation" id="9"]
+resource_name = "jab"
+length = 0.48
+loop_mode = 0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D/Skeleton2D/Hip/Chest/RightArm:rotation_degrees")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.08, 0.35, 0.48),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [0.0, -90.0, -90.0, 0.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D/Skeleton2D/Hip/Chest/RightArm/RightForearm:rotation_degrees")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.08, 0.35, 0.48),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [0.0, 0.0, 0.0, 0.0]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Sprite2D/Skeleton2D/Hip/Chest/RightArm/RightForearm/RightHand:rotation_degrees")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.48),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [70.3278, 70.3278]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Sprite2D/Skeleton2D/Hip/Chest/LeftArm:rotation_degrees")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.48),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, 0.0]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Sprite2D/Skeleton2D/Hip/Chest/LeftArm/LeftForearm:rotation_degrees")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 0.48),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, 0.0]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("Sprite2D/Skeleton2D/Hip/Chest/LeftArm/LeftForearm/LeftHand:rotation_degrees")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0, 0.48),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [70.4643, 70.4643]
+}
+
 [resource]
 _data = {
 &"fall": SubResource("1"),
 &"fly": SubResource("2"),
 &"idle": SubResource("3"),
+&"jab": SubResource("9"),
 &"jump": SubResource("4"),
 &"land": SubResource("5"),
 &"land_hard": SubResource("6"),

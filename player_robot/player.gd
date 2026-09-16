@@ -40,6 +40,8 @@ func _physics_process(delta: float) -> void:
 	elif Input.is_action_just_released(&"jump") and velocity.y < 0.0:
 		# The player let go of jump early, reduce vertical momentum.
 		velocity.y *= 0.6
+	if Input.is_action_just_pressed(&"jab"):
+		$AnimationTree["parameters/jab/request"] = AnimationNodeOneShot.ONE_SHOT_REQUEST_FIRE
 	# Fall.
 	velocity.y = minf(TERMINAL_VELOCITY, velocity.y + get_gravity().y * delta)
 
