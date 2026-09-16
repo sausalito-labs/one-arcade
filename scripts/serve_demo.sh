@@ -5,7 +5,6 @@ set -euo pipefail
 # Reads GODOT_BIN, DEMO_HOST, DEMO_PORT, BUILD_DIR from .env.
 # Usage:
 #   ./scripts/serve_demo.sh           # build once then serve
-#   ./scripts/serve_demo.sh --build   # force rebuild before serving
 #   ./scripts/serve_demo.sh --serve   # serve existing build without rebuilding
 
 PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
@@ -22,9 +21,7 @@ BUILD_DIR="${BUILD_DIR:-build/html5}"
 INDEX="$BUILD_DIR/index.html"
 
 MODE="build-and-serve"
-if [[ "${1:-}" == "--build" ]]; then
-    MODE="build-and-serve"
-elif [[ "${1:-}" == "--serve" ]]; then
+if [[ "${1:-}" == "--serve" ]]; then
     MODE="serve-only"
 fi
 

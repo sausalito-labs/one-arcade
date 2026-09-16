@@ -5,7 +5,7 @@ Loads the demo page, captures console logs, and takes multiple screenshots
 over time. Compares screenshots to detect whether the canvas content changes
 (indicating animation).
 """
-import io
+import os
 import sys
 import time
 from pathlib import Path
@@ -28,7 +28,12 @@ chrome_options.add_argument("--disable-dev-shm-usage")
 chrome_options.add_argument("--enable-unsafe-swiftshader")
 chrome_options.set_capability("goog:loggingPrefs", {"browser": "ALL"})
 
-service = Service("/usr/local/bin/chromedriver-real")
+import shutil
+driver_path = os.environ.get("CHROMEDRIVER") or shutil.which("chromedriver")
+if not driver_path:
+    print("ERROR: chromedriver not found. Set CHROMEDRIVER or add it to PATH.", file=sys.stderr)
+    sys.exit(1)
+service = Service(driver_path)
 driver = webdriver.Chrome(service=service, options=chrome_options)
 
 try:
@@ -65,7 +70,6 @@ try:
 
     # Hold 'd' for a few seconds and capture running frames.
     from selenium.webdriver.common.action_chains import ActionChains
-    from selenium.webdriver.common.keys import Keys
     ActionChains(driver).key_down('d').perform()
     for i in range(5, 10):
         path = OUT_DIR / f"canvas_{i}.png"
