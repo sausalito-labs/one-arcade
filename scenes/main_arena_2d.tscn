@@ -239,13 +239,7 @@ script = ExtResource("2_fight")
 fighter_a_path = NodePath("../P1")
 fighter_b_path = NodePath("../P2")
 frame_margin = 60.0
-min_zoom = 1.5
-max_zoom = 4.0
-follow_speed = 4.0
-clamp_left = -600.0
-clamp_right = 600.0
-clamp_top = 150.0
-clamp_bottom = 700.0
+clamp_top = 200.0
 
 [node name="P1" parent="." instance=ExtResource("1_u3vbg")]
 position = Vector2(-150, 500)

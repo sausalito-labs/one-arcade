@@ -12,9 +12,9 @@ extends Camera2D
 @export var follow_speed: float = 4.0
 ## Hard clamping box (matches the ring bounds) so the camera never shows
 ## outside the ring.
-@export var clamp_left: float = -650.0
-@export var clamp_right: float = 650.0
-@export var clamp_top: float = 150.0
+@export var clamp_left: float = -600.0
+@export var clamp_right: float = 600.0
+@export var clamp_top: float = 200.0
 @export var clamp_bottom: float = 700.0
 
 var fighter_a: Node2D
@@ -23,7 +23,9 @@ var fighter_b: Node2D
 func _ready() -> void:
 	fighter_a = get_node_or_null(fighter_a_path)
 	fighter_b = get_node_or_null(fighter_b_path)
-	if fighter_a:
+	if fighter_a and fighter_b:
+		global_position = (fighter_a.global_position + fighter_b.global_position) * 0.5
+	elif fighter_a:
 		global_position = fighter_a.global_position
 
 func _process(delta: float) -> void:

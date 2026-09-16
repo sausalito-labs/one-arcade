@@ -30,7 +30,11 @@ var falling_fast: bool = false
 var no_move_horizontal_time := 0.0
 
 func _ready() -> void:
-	$Sprite2D.scale.x = facing
+	# Flip horizontally for facing while preserving the x scale (the sprite's
+	# base scale is non-1, so we multiply rather than overwrite).
+	var sprite_scale: Vector2 = $Sprite2D.scale
+	sprite_scale.x = absf(sprite_scale.x) * facing
+	$Sprite2D.scale = sprite_scale
 	# Work around Godot 4.3 bug #96553: the default (empty name) animation
 	# library can fail to load due to a String/StringName hash mismatch.
 	# Load the library with an explicit name so it survives export.
