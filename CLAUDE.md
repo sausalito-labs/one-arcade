@@ -32,7 +32,10 @@ Copy `.env.example` to `.env` to configure `GODOT_BIN`, `DEMO_HOST`, `DEMO_PORT`
   (HTTPS) for SharedArrayBuffer. Serve it behind Tailscale Funnel, which
   terminates a valid HTTPS cert — the local server stays plain HTTP on
   127.0.0.1. See `tailscale funnel --help` for path/port setup.
-- Godot export templates must be installed. On this VPS they live under `~/.local/share/godot/export_templates/`. If the folder is named `4.3-stable`, Godot looks for `4.3.stable`; symlink if needed.
+- Export templates are provisioned by the game Nix workflow
+  (`godot_4-export-templates`, symlinked into
+  `~/.local/share/godot/export_templates/`). No manual download or rename
+  needed.
 
 ## Documentation
 - Roadmap & task tracking: see `PLAN.md`
