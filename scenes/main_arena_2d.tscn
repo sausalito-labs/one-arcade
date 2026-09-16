@@ -23,6 +23,183 @@ offset_right = 2000.0
 offset_bottom = 540.0
 color = Color(0.18, 0.18, 0.22, 1)
 
+[node name="FloorMarkers" type="Node2D" parent="."]
+
+[node name="M2304" type="ColorRect" parent="FloorMarkers"]
+offset_left = 2302.0
+offset_top = 500.0
+offset_right = 2308.0
+offset_bottom = 540.0
+color = Color(0.27, 0.27, 0.33, 1)
+
+[node name="M2112" type="ColorRect" parent="FloorMarkers"]
+offset_left = 2110.0
+offset_top = 500.0
+offset_right = 2116.0
+offset_bottom = 540.0
+color = Color(0.22, 0.22, 0.27, 1)
+
+[node name="M1920" type="ColorRect" parent="FloorMarkers"]
+offset_left = 1918.0
+offset_top = 500.0
+offset_right = 1924.0
+offset_bottom = 540.0
+color = Color(0.27, 0.27, 0.33, 1)
+
+[node name="M1728" type="ColorRect" parent="FloorMarkers"]
+offset_left = 1726.0
+offset_top = 500.0
+offset_right = 1732.0
+offset_bottom = 540.0
+color = Color(0.22, 0.22, 0.27, 1)
+
+[node name="M1536" type="ColorRect" parent="FloorMarkers"]
+offset_left = 1534.0
+offset_top = 500.0
+offset_right = 1540.0
+offset_bottom = 540.0
+color = Color(0.27, 0.27, 0.33, 1)
+
+[node name="M1344" type="ColorRect" parent="FloorMarkers"]
+offset_left = 1342.0
+offset_top = 500.0
+offset_right = 1348.0
+offset_bottom = 540.0
+color = Color(0.22, 0.22, 0.27, 1)
+
+[node name="M1152" type="ColorRect" parent="FloorMarkers"]
+offset_left = 1150.0
+offset_top = 500.0
+offset_right = 1156.0
+offset_bottom = 540.0
+color = Color(0.27, 0.27, 0.33, 1)
+
+[node name="M960" type="ColorRect" parent="FloorMarkers"]
+offset_left = 958.0
+offset_top = 500.0
+offset_right = 964.0
+offset_bottom = 540.0
+color = Color(0.22, 0.22, 0.27, 1)
+
+[node name="M768" type="ColorRect" parent="FloorMarkers"]
+offset_left = 766.0
+offset_top = 500.0
+offset_right = 772.0
+offset_bottom = 540.0
+color = Color(0.27, 0.27, 0.33, 1)
+
+[node name="M576" type="ColorRect" parent="FloorMarkers"]
+offset_left = 574.0
+offset_top = 500.0
+offset_right = 580.0
+offset_bottom = 540.0
+color = Color(0.22, 0.22, 0.27, 1)
+
+[node name="M384" type="ColorRect" parent="FloorMarkers"]
+offset_left = 382.0
+offset_top = 500.0
+offset_right = 388.0
+offset_bottom = 540.0
+color = Color(0.27, 0.27, 0.33, 1)
+
+[node name="M192" type="ColorRect" parent="FloorMarkers"]
+offset_left = 190.0
+offset_top = 500.0
+offset_right = 196.0
+offset_bottom = 540.0
+color = Color(0.22, 0.22, 0.27, 1)
+
+[node name="M0" type="ColorRect" parent="FloorMarkers"]
+offset_left = -2.0
+offset_top = 500.0
+offset_right = 4.0
+offset_bottom = 540.0
+color = Color(0.36, 0.36, 0.45, 1)
+
+[node name="M192n" type="ColorRect" parent="FloorMarkers"]
+offset_left = -196.0
+offset_top = 500.0
+offset_right = -190.0
+offset_bottom = 540.0
+color = Color(0.22, 0.22, 0.27, 1)
+
+[node name="M384n" type="ColorRect" parent="FloorMarkers"]
+offset_left = -388.0
+offset_top = 500.0
+offset_right = -382.0
+offset_bottom = 540.0
+color = Color(0.27, 0.27, 0.33, 1)
+
+[node name="M576n" type="ColorRect" parent="FloorMarkers"]
+offset_left = -580.0
+offset_top = 500.0
+offset_right = -574.0
+offset_bottom = 540.0
+color = Color(0.22, 0.22, 0.27, 1)
+
+[node name="M768n" type="ColorRect" parent="FloorMarkers"]
+offset_left = -772.0
+offset_top = 500.0
+offset_right = -766.0
+offset_bottom = 540.0
+color = Color(0.27, 0.27, 0.33, 1)
+
+[node name="M960n" type="ColorRect" parent="FloorMarkers"]
+offset_left = -964.0
+offset_top = 500.0
+offset_right = -958.0
+offset_bottom = 540.0
+color = Color(0.22, 0.22, 0.27, 1)
+
+[node name="M1152n" type="ColorRect" parent="FloorMarkers"]
+offset_left = -1156.0
+offset_top = 500.0
+offset_right = -1150.0
+offset_bottom = 540.0
+color = Color(0.27, 0.27, 0.33, 1)
+
+[node name="M1344n" type="ColorRect" parent="FloorMarkers"]
+offset_left = -1348.0
+offset_top = 500.0
+offset_right = -1342.0
+offset_bottom = 540.0
+color = Color(0.22, 0.22, 0.27, 1)
+
+[node name="M1536n" type="ColorRect" parent="FloorMarkers"]
+offset_left = -1540.0
+offset_top = 500.0
+offset_right = -1534.0
+offset_bottom = 540.0
+color = Color(0.27, 0.27, 0.33, 1)
+
+[node name="M1728n" type="ColorRect" parent="FloorMarkers"]
+offset_left = -1732.0
+offset_top = 500.0
+offset_right = -1726.0
+offset_bottom = 540.0
+color = Color(0.22, 0.22, 0.27, 1)
+
+[node name="M1920n" type="ColorRect" parent="FloorMarkers"]
+offset_left = -1924.0
+offset_top = 500.0
+offset_right = -1918.0
+offset_bottom = 540.0
+color = Color(0.27, 0.27, 0.33, 1)
+
+[node name="M2112n" type="ColorRect" parent="FloorMarkers"]
+offset_left = -2116.0
+offset_top = 500.0
+offset_right = -2110.0
+offset_bottom = 540.0
+color = Color(0.22, 0.22, 0.27, 1)
+
+[node name="M2304n" type="ColorRect" parent="FloorMarkers"]
+offset_left = -2308.0
+offset_top = 500.0
+offset_right = -2302.0
+offset_bottom = 540.0
+color = Color(0.27, 0.27, 0.33, 1)
+
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(0, 450)
 zoom = Vector2(4, 4)

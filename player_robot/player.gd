@@ -8,6 +8,8 @@ const States = {
 	RUN = "run",
 	FLY = "fly",
 	FALL = "fall",
+	BACKUP = "backup",
+	BACKUP_FAST = "backup_fast",
 }
 
 const WALK_SPEED = 200.0
@@ -19,10 +21,6 @@ const TERMINAL_VELOCITY = 400
 var falling_slow: bool = false
 var falling_fast: bool = false
 var no_move_horizontal_time := 0.0
-
-@onready var sprite: Node2D = $Sprite2D
-@onready var sprite_scale := sprite.scale.x
-
 
 func _ready() -> void:
 	# Work around Godot 4.3 bug #96553: the default (empty name) animation
@@ -53,12 +51,6 @@ func _physics_process(delta: float) -> void:
 		velocity.x = 0.0
 		no_move_horizontal_time -= delta
 
-	if not is_zero_approx(velocity.x):
-		if velocity.x > 0.0:
-			sprite.scale.x = 1.0 * sprite_scale
-		else:
-			sprite.scale.x = -1.0 * sprite_scale
-
 	move_and_slide()
 
 	# After applying our motion, update our animation to match.
@@ -81,12 +73,17 @@ func _physics_process(delta: float) -> void:
 		elif falling_slow:
 			$AnimationTree["parameters/land/request"] = AnimationNodeOneShot.ONE_SHOT_REQUEST_FIRE
 
-		if abs(velocity.x) > 50:
-			$AnimationTree["parameters/state/transition_request"] = States.RUN
-			$AnimationTree["parameters/run_timescale/scale"] = abs(velocity.x) / 60
+		# The rig always faces right, so moving left is a backpedal.
+		var moving_back := velocity.x < 0.0
+		var speed: float = abs(velocity.x)
+		if speed > 50:
+			$AnimationTree["parameters/state/transition_request"] = States.BACKUP_FAST if moving_back else States.RUN
+			$AnimationTree["parameters/run_timescale/scale"] = speed / 60
+			$AnimationTree["parameters/backup_fast_timescale/scale"] = speed / 60
 		elif velocity.x:
-			$AnimationTree["parameters/state/transition_request"] = States.WALK
-			$AnimationTree["parameters/walk_timescale/scale"] = abs(velocity.x) / 12
+			$AnimationTree["parameters/state/transition_request"] = States.BACKUP if moving_back else States.WALK
+			$AnimationTree["parameters/walk_timescale/scale"] = speed / 12
+			$AnimationTree["parameters/backup_timescale/scale"] = speed / 12
 		else:
 			$AnimationTree["parameters/state/transition_request"] = States.IDLE
 
