@@ -146,6 +146,7 @@ size = Vector2(22, 32.8716)
 
 [node name="SkeletalPlayer" type="CharacterBody2D" unique_id=626486948]
 physics_interpolation_mode = 1
+collision_layer = 4
 collision_mask = 28
 floor_max_angle = 0.907571
 floor_snap_length = 20.0
