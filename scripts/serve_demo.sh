@@ -2,7 +2,7 @@
 set -euo pipefail
 
 # Build and serve the HTML5/WebGL demo.
-# Reads GODOT_BIN, DEMO_HOST, DEMO_PORT, BUILD_DIR, DEMO_HTTPS from .env.
+# Reads GODOT_BIN, DEMO_HOST, DEMO_PORT, BUILD_DIR from .env.
 # Usage:
 #   ./scripts/serve_demo.sh           # build once then serve
 #   ./scripts/serve_demo.sh --build   # force rebuild before serving
@@ -16,10 +16,9 @@ if [[ -f .env ]]; then
     export $(grep -v '^#' .env | xargs)
 fi
 
-DEMO_HOST="${DEMO_HOST:-0.0.0.0}"
+DEMO_HOST="${DEMO_HOST:-127.0.0.1}"
 DEMO_PORT="${DEMO_PORT:-8765}"
 BUILD_DIR="${BUILD_DIR:-build/html5}"
-DEMO_HTTPS="${DEMO_HTTPS:-true}"
 INDEX="$BUILD_DIR/index.html"
 
 MODE="build-and-serve"
@@ -41,5 +40,4 @@ fi
 python3 scripts/serve_demo.py \
     --host "$DEMO_HOST" \
     --port "$DEMO_PORT" \
-    --directory "$BUILD_DIR" \
-    --https "${DEMO_HTTPS:-true}"
+    --directory "$BUILD_DIR"

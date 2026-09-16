@@ -17,7 +17,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
-URL = sys.argv[1] if len(sys.argv) > 1 else "https://5.181.51.241:8765/"
+URL = sys.argv[1] if len(sys.argv) > 1 else "https://agent-box.tailadabc1.ts.net/demo/"
 OUT_DIR = Path("/tmp/godot_web_test")
 OUT_DIR.mkdir(exist_ok=True)
 
@@ -25,10 +25,6 @@ chrome_options = Options()
 chrome_options.add_argument("--headless=new")
 chrome_options.add_argument("--no-sandbox")
 chrome_options.add_argument("--disable-dev-shm-usage")
-chrome_options.add_argument("--ignore-certificate-errors")
-chrome_options.add_argument("--ignore-ssl-errors")
-chrome_options.add_argument("--allow-insecure-localhost")
-chrome_options.add_argument("--allow-running-insecure-content")
 chrome_options.add_argument("--enable-unsafe-swiftshader")
 chrome_options.set_capability("goog:loggingPrefs", {"browser": "ALL"})
 
