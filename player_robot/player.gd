@@ -18,11 +18,23 @@ const JUMP_VELOCITY = -400.0
 ## Maximum speed at which the player can fall.
 const TERMINAL_VELOCITY = 400
 
+## Whether this fighter reads player input. Disabled fighters (e.g. P2 as a
+## placeholder/AI) just stand still.
+@export var controllable := true
+## -1 faces left (mirrored sprite), 1 faces right. The animation data is authored
+## for a right-facing rig; mirroring the Sprite2D flips it cleanly.
+@export var facing := 1
+
 var falling_slow: bool = false
 var falling_fast: bool = false
 var no_move_horizontal_time := 0.0
 
 func _ready() -> void:
+	# Flip horizontally for facing while preserving the x scale (the sprite's
+	# base scale is non-1, so we multiply rather than overwrite).
+	var sprite_scale: Vector2 = $Sprite2D.scale
+	sprite_scale.x = absf(sprite_scale.x) * facing
+	$Sprite2D.scale = sprite_scale
 	# Work around Godot 4.3 bug #96553: the default (empty name) animation
 	# library can fail to load due to a String/StringName hash mismatch.
 	# Load the library with an explicit name so it survives export.
@@ -33,17 +45,20 @@ func _ready() -> void:
 
 func _physics_process(delta: float) -> void:
 	var is_jumping: bool = false
-	if Input.is_action_just_pressed(&"jump"):
-		is_jumping = try_jump()
-	elif Input.is_action_just_released(&"jump") and velocity.y < 0.0:
-		# The player let go of jump early, reduce vertical momentum.
-		velocity.y *= 0.6
-	if Input.is_action_just_pressed(&"jab"):
-		$AnimationTree["parameters/jab/request"] = AnimationNodeOneShot.ONE_SHOT_REQUEST_FIRE
+	if controllable:
+		if Input.is_action_just_pressed(&"jump"):
+			is_jumping = try_jump()
+		elif Input.is_action_just_released(&"jump") and velocity.y < 0.0:
+			# The player let go of jump early, reduce vertical momentum.
+			velocity.y *= 0.6
+		if Input.is_action_just_pressed(&"jab"):
+			$AnimationTree["parameters/jab/request"] = AnimationNodeOneShot.ONE_SHOT_REQUEST_FIRE
 	# Fall.
 	velocity.y = minf(TERMINAL_VELOCITY, velocity.y + get_gravity().y * delta)
 
-	var direction := Input.get_axis(&"move_left", &"move_right") * WALK_SPEED
+	var direction := 0.0
+	if controllable:
+		direction = Input.get_axis(&"move_left", &"move_right") * WALK_SPEED
 	velocity.x = move_toward(velocity.x, direction, ACCELERATION_SPEED * delta)
 
 	if no_move_horizontal_time > 0.0:

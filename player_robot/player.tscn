@@ -354,12 +354,3 @@ internal_vertex_count = 0
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=421938338]
 position = Vector2(0.776211, -16.4722)
 shape = SubResource("24")
-
-[node name="Camera2D" type="Camera2D" parent="." unique_id=1733242303]
-position = Vector2(0, -32)
-zoom = Vector2(4, 4)
-process_callback = 0
-limit_left = -600
-limit_top = -598
-limit_right = 596
-limit_bottom = 423
