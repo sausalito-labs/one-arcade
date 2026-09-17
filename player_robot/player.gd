@@ -57,7 +57,7 @@ func _ready() -> void:
 	$AnimationTree.active = true
 
 	# Flip the hitbox so it extends ahead of the fighter; hurtbox stays centered.
-	_hitbox.position = Vector2(30 * facing, -20)
+	_hitbox.position = Vector2(7 * facing, -20)
 	_hitbox.monitoring = false
 	# The hurtbox area needs to know which fighter owns it so the hitbox can
 	# map "area touched" back onto a victim even when both fighters share the
