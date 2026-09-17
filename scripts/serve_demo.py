@@ -7,6 +7,7 @@ provide the cross-origin isolation the threaded Godot build needs for
 SharedArrayBuffer.
 """
 import argparse
+import gzip
 import http.server
 import os
 import socketserver
@@ -15,7 +16,7 @@ from pathlib import Path
 
 
 class DemoRequestHandler(http.server.SimpleHTTPRequestHandler):
-    """HTTP request handler with cache-busting and COOP/COEP headers."""
+    """HTTP request handler with cache-busting, COOP/COEP headers, and gzip."""
 
     def end_headers(self) -> None:
         # Never cache the demo files so browsers always load the latest build.
@@ -28,6 +29,28 @@ class DemoRequestHandler(http.server.SimpleHTTPRequestHandler):
         self.send_header("Cross-Origin-Opener-Policy", "same-origin")
         self.send_header("Cross-Origin-Embedder-Policy", "require-corp")
         super().end_headers()
+
+    def send_head(self):
+        """Serve pre-compressed .gz siblings when the client accepts gzip.
+
+        Browsers transparently decompress Content-Encoding: gzip, so a 33 MB
+        wasm hits the phone as ~8 MB. The raw file remains the fallback.
+        """
+        accept = self.headers.get("Accept-Encoding", "")
+        if "gzip" in accept:
+            gz_path = Path(self.translate_path(self.path).rstrip("/"))  # type: ignore[attr-defined]
+            if gz_path.is_file():
+                gz = gz_path.with_name(gz_path.name + ".gz")
+                if gz.is_file():
+                    ctype = self.guess_type(str(gz_path))
+                    self.send_response(200)
+                    self.send_header("Content-type", ctype)
+                    self.send_header("Content-Length", gz.stat().st_size)
+                    self.send_header("Content-Encoding", "gzip")
+                    self.send_header("Last-Modified", self.date_time_string(gz.stat().st_mtime))
+                    self.end_headers()  # termmate the header block before the body
+                    return gz.open("rb")
+        return super().send_head()
 
     def log_message(self, format: str, *args) -> None:
         # Log to stdout so tmux/terminal shows access traffic.
