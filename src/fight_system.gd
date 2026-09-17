@@ -24,7 +24,6 @@ func register_fighter(fighter: Player) -> void:
 	health[fighter.fighter_id] = MAX_HEALTH
 	_koed[fighter.fighter_id] = false
 	fighter.health = MAX_HEALTH
-	fighter.on_health_changed()
 
 
 ## A fighter's hitbox touched an opponent's hurtbox.

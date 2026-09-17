@@ -10,7 +10,7 @@ config_version=5
 
 [application]
 
-config/name="one-arcarde"
+config/name="one-arcade"
 run/main_scene="res://scenes/main_arena_2d.tscn"
 config/features=PackedStringArray("4.7", "GL Compatibility")
 

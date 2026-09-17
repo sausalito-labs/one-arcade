@@ -16,6 +16,14 @@ extends Camera2D
 @export var clamp_right: float = 600.0
 @export var clamp_top: float = 200.0
 @export var clamp_bottom: float = 700.0
+## World-space Y of the floor line the fighters stand on. The camera keeps
+## this line pinned just above the bottom of the frame instead of centering
+## the fighters, so the floor reads as a solid stage rather than a floating
+## strip with empty void above and below it.
+@export var floor_y: float = 500.0
+## Extra world-space visible below the floor line (a sliver of stage under
+## the fighters). Keep small so there is no "floating floor" gap.
+@export var floor_pad: float = 12.0
 
 var fighter_a: Node2D
 var fighter_b: Node2D
@@ -27,6 +35,7 @@ func _ready() -> void:
 		global_position = (fighter_a.global_position + fighter_b.global_position) * 0.5
 	elif fighter_a:
 		global_position = fighter_a.global_position
+	_apply_y_framing()
 
 func _process(delta: float) -> void:
 	if not fighter_a or not fighter_b:
@@ -43,10 +52,15 @@ func _process(delta: float) -> void:
 	var target_zoom: float = clampf(screen / span, min_zoom, max_zoom)
 	zoom = zoom.lerp(Vector2.ONE * target_zoom, 1.0 - exp(-follow_speed * delta))
 
-	global_position = global_position.lerp(midpoint, 1.0 - exp(-follow_speed * delta))
-
-	# Keep the visible area inside the ring.
+	# Only X tracks the fighters; Y is pinned by _apply_y_framing (floor near
+	# the bottom of the frame), so the lerp must not mess with Y.
 	var half_w := (get_viewport_rect().size.x / 2.0) / zoom.x
-	var half_h := (get_viewport_rect().size.y / 2.0) / zoom.y
+	global_position.x = lerpf(global_position.x, midpoint.x, 1.0 - exp(-follow_speed * delta))
 	global_position.x = clampf(global_position.x, clamp_left + half_w, clamp_right - half_w)
-	global_position.y = clampf(global_position.y, clamp_top + half_h, clamp_bottom - half_h)
+	_apply_y_framing()
+
+
+## Pin the bottom of the screen just below the floor line and keep Y there.
+func _apply_y_framing() -> void:
+	var half_h := (get_viewport_rect().size.y / 2.0) / zoom.y
+	global_position.y = clampf(floor_y + floor_pad - half_h, clamp_top + half_h, clamp_bottom - half_h)

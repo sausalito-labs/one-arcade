@@ -40,7 +40,6 @@ var knockback_velocity := 0.0
 ## Active hitbox is armed and may damage the opponent (during jab windup-out).
 var hitbox_active := false
 
-@onready var _animation_tree := $AnimationTree
 @onready var _hitbox := $Hitbox
 @onready var _hurtbox := $Hurtbox
 
@@ -161,9 +160,8 @@ func try_jump() -> bool:
 	return false
 
 
-## Arm the hitbox for the active frames of the jab. The box stays live until the
-## punch retract; _physics_process disarms it shortly after (see timer logic in
-## _physics_process via hitbox_monitor_timeout).
+## Arm the hitbox for the active frames of the jab. The box stays live until
+## the punch retract; a short-lived timer disarms it.
 func arm_hitbox() -> void:
 	if hitbox_active:
 		return
@@ -195,11 +193,6 @@ func get_hit(knockback: float) -> void:
 	var sw := create_tween()
 	sw.tween_property($Sprite2D, "modulate", Color(2.0, 1.0, 1.0, 1.0), 0.04)
 	sw.tween_property($Sprite2D, "modulate", Color.WHITE, 0.18)
-
-
-## Called by FightSystem when health changes (or fighter first registers).
-func on_health_changed() -> void:
-	pass
 
 
 func reset_fighter() -> void:

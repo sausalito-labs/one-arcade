@@ -9,7 +9,8 @@ extends CanvasLayer
 const MARGIN_F := 0.02
 const CENTER_GAP_F := 0.04
 const BAR_HEIGHT := 26.0
-const BAR_TOP := 30.0
+const BAR_TOP := 78.0
+const NAME_TOP := 46.0
 const BAR_COLORS := {1: Color("#e8305a"), 2: Color("#4aa8e0")}
 const NAME_COLORS := {1: Color("#ffd23f"), 2: Color("#ffe8d6")}
 
@@ -48,10 +49,8 @@ func _build() -> void:
 	round.add_theme_color_override("font_color", Color("#ffffff"))
 	round.add_theme_color_override("font_outline_color", Color("#000000"))
 	round.add_theme_constant_override("outline_size", 6)
-	round.position = Vector2(0, 4)
-	round.size = Vector2(1, 30)
-	round.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	round.set_anchors_preset(Control.PRESET_TOP_WIDE)
+	round.set_anchors_and_offsets_preset(Control.PRESET_TOP_WIDE)
+	round.offset_top = 4
 	round.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	root.add_child(round)
 	_round_label = round
@@ -99,12 +98,12 @@ func _build() -> void:
 ## Recompute layout after a resize: bars scale with the viewport so they
 ## always span the screen edge-to-edge with a small symmetric margin.
 func _relayout() -> void:
-	var vw: float = get_viewport().get_visible_rect().size.x
-	var margin: float = vw * MARGIN_F
-	var gap: float = vw * CENTER_GAP_F
-	var bar_w: float = (vw - margin * 2.0 - gap) / 2.0
+	var bar_w: float = _bar_geometry()
 	if bar_w <= 0.0:
 		return
+
+	var vw: float = get_viewport().get_visible_rect().size.x
+	var margin: float = vw * MARGIN_F
 
 	for fighter_id: int in [1, 2]:
 		var is_left: bool = fighter_id == 1
@@ -112,8 +111,8 @@ func _relayout() -> void:
 
 		_frames[fighter_id].position = Vector2(x, BAR_TOP)
 		_frames[fighter_id].size = Vector2(bar_w, BAR_HEIGHT)
-		# Name label sits directly above its bar, full bar-width wide.
-		_names[fighter_id].position = Vector2(x, 8)
+		# Name label sits above its bar, full bar-width wide.
+		_names[fighter_id].position = Vector2(x, NAME_TOP)
 		_names[fighter_id].size = Vector2(bar_w, 22)
 
 		var fill: ColorRect = _fills[fighter_id]
@@ -125,12 +124,17 @@ func _relayout() -> void:
 		_update_fill(fighter_id, FightSystem.health[fighter_id])
 
 
-func _update_fill(fighter_id: int, hp: float) -> void:
-	var fill: ColorRect = _fills[fighter_id]
+## One source of truth for bar geometry derived from the current viewport.
+func _bar_geometry() -> float:
 	var vw: float = get_viewport().get_visible_rect().size.x
 	var margin: float = vw * MARGIN_F
 	var gap: float = vw * CENTER_GAP_F
-	var bar_w: float = (vw - margin * 2.0 - gap) / 2.0
+	return (vw - margin * 2.0 - gap) / 2.0
+
+
+func _update_fill(fighter_id: int, hp: float) -> void:
+	var fill: ColorRect = _fills[fighter_id]
+	var bar_w: float = _bar_geometry()
 	var new_width: float = bar_w * (hp / FightSystem.MAX_HEALTH)
 	var anchor_x: float = fill.get_meta("anchor_x")
 	fill.position.x = anchor_x - new_width if fighter_id == 2 else anchor_x
